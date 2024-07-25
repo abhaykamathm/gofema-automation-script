@@ -3,7 +3,7 @@ export function generateBQPayload(schemaId, schemaName, universeId, keyName) {
     universes: [universeId],
     name: schemaName,
     desc: "Yearwise Tourisme_Department Revenue",
-    definition: `SELECT  \`entity.${keyName}\` AS ${keyName} FROM t_${schemaId}_t`,
+    definition: `SELECT  \`entity.${keyName}\` AS ${keyName} FROM t_${schemaId}_t WHERE \`entity.${keyName}\`='P' `,
     aqDefinitionRequest: {
       tables: [schemaId],
     },
