@@ -93,7 +93,7 @@ async function createContext(
       let returnData = {
         ingestionContextId: "",
         ingestionContextName: "",
-        ingestionStatusCode: "500",
+        ingestionStatusCode: error?.response?.data?.errorCode,
         ingestionContextError: error?.response?.data?.errorMessage,
       };
       // Update with new data

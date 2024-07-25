@@ -92,7 +92,7 @@ async function createCohort(schemaId, schemaName, type, storeName) {
       let returnData = {
         ingestionCohortId: "",
         ingestionCohortName: "",
-        ingestionStatusCode: "500",
+        ingestionStatusCode: error?.response?.data?.errorCode,
         ingestionCohortError: error?.response?.data?.errorMessage,
       };
       // Update with new data
