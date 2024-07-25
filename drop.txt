@@ -1,0 +1,301 @@
+curl --location 'https://ig.mobiusdtaas.ai/pi-entity-service/v1.0/schemas' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer Token' \
+--data '{
+    "entityName": "SpectrguardAlertData_test",
+    "description": "Schema for Alert declaration data",
+    "schemaReadAccess": "PUBLIC",
+    "dataReadAccess": "PUBLIC",
+    "dataWriteAccess": "PUBLIC",
+    "metadataReadAccess": "PUBLIC",
+    "metadataWriteAccess": "PUBLIC",
+    "universes": [
+        "668fa6e1a2ee7d2b51716cb3"
+    ],
+    "tags": {
+        "BLUE": ["tags"]
+    },
+    "attributes": [
+        {
+            "name": "femaDeclarationString",
+            "nestedName": "femaDeclarationString",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "disasterNumber",
+            "nestedName": "disasterNumber",
+            "type": {
+                "type": "integer"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "state",
+            "nestedName": "state",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "declarationType",
+            "nestedName": "declarationType",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "declarationDate",
+            "nestedName": "declarationDate",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "fyDeclared",
+            "nestedName": "fyDeclared",
+            "type": {
+                "type": "integer"
+            },
+            "required": true,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "incidentType",
+            "nestedName": "incidentType",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "declarationTitle",
+            "nestedName": "declarationTitle",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "ihProgramDeclared",
+            "nestedName": "ihProgramDeclared",
+            "type": {
+                "type": "boolean"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "iaProgramDeclared",
+            "nestedName": "iaProgramDeclared",
+            "type": {
+                "type": "boolean"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "paProgramDeclared",
+            "nestedName": "paProgramDeclared",
+            "type": {
+                "type": "boolean"
+            },
+            "required": true,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "hmProgramDeclared",
+            "nestedName": "hmProgramDeclared",
+            "type": {
+                "type": "boolean"
+            },
+            "required": true,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "incidentBeginDate",
+            "nestedName": "incidentBeginDate",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "incidentEndDate",
+            "nestedName": "incidentEndDate",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "disasterCloseoutDate",
+            "nestedName": "disasterCloseoutDate",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "tribalRequest",
+            "nestedName": "tribalRequest",
+            "type": {
+                "type": "boolean"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "fipsStateCode",
+            "nestedName": "fipsStateCode",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "fipsCountyCode",
+            "nestedName": "fipsCountyCode",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "placeCode",
+            "nestedName": "placeCode",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "designatedArea",
+            "nestedName": "designatedArea",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "declarationRequestNumber",
+            "nestedName": "declarationRequestNumber",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "lastIAFilingDate",
+            "nestedName": "lastIAFilingDate",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "lastRefresh",
+            "nestedName": "lastRefresh",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "hash",
+            "nestedName": "hash",
+            "type": {
+                "type": "string"
+            },
+            "required": false,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        },
+        {
+            "name": "id",
+            "nestedName": "id",
+            "type": {
+                "type": "string"
+            },
+            "required": true,
+            "reference": false,
+            "childAttributes": [],
+            "access": "PUBLIC"
+        }
+    ],
+    "primaryKey": [
+        "id"
+    ],
+    "execute": "PUBLIC",
+    "visibility": "PUBLIC"
+}
+'

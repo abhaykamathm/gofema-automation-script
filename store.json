@@ -1,0 +1,16 @@
+{
+  "insertionSchemaId": "66a26b2e72e881610857cbb7",
+  "insertionSchemaName": "openfema_Normal_2024-07-25T20:40:01.163",
+  "insertionStatusCode": 201,
+  "ingestionJobSchemaId": "66a26b36f94e743dac786cc2",
+  "ingestionJobSchemaName": "openfema_Ingestion_2024-07-25T20:40:01.163",
+  "ingestionJobStatusCode": 201,
+  "schemaError": "",
+  "insertionCohortId": "66a26b2f09f74e5f39069d13",
+  "insertionCohortName": "openfema_Normal_2024-07-25T20:40:01.163",
+  "insertionCohortError": "",
+  "ingestionCohortId": "66a26b2f2d0c565db6a690c9",
+  "ingestionCohortName": "openfema_Ingestion_2024-07-25T20:40:01.163",
+  "ingestionStatusCode": 201,
+  "ingestionCohortError": ""
+}
