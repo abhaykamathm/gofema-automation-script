@@ -78,13 +78,38 @@ async function createCohort(schemaId, schemaName, type, storeName) {
     }
     await updateStore();
   } catch (error) {
-    let errorMessage = "";
-    returnData.cohortId = "";
-    returnData.statusCode = 500;
-    returnData.cohortError = errorMessage?.errorObject?.errorMessage;
-    // console.log("cohort error", error?.reponse);
-    // console.log(returnData);
-    return returnData;
+    async function updateStore() {
+      const storeFilePath = path.join(process.cwd(), storeName);
+
+      let existingData = {};
+
+      // Read the existing store.json content
+      if (fs.existsSync(storeFilePath)) {
+        const storeContent = fs.readFileSync(storeFilePath, "utf-8");
+        existingData = JSON.parse(storeContent);
+      }
+
+      let returnData = {
+        ingestionCohortId: "",
+        ingestionCohortName: "",
+        ingestionStatusCode: "500",
+        ingestionCohortError: error?.response?.data?.errorMessage,
+      };
+      // Update with new data
+      const newData = {
+        ...existingData,
+        ...returnData,
+      };
+
+      // Write the updated data back to store.json
+      fs.writeFileSync(
+        storeFilePath,
+        JSON.stringify(newData, null, 2),
+        "utf-8"
+      );
+      console.log("Data updated in store.json");
+    }
+    await updateStore();
   }
 }
 

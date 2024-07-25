@@ -24,7 +24,6 @@ async function createContext(
   let returnData = {};
 
   try {
-    // cohort payload creation
     var contextPayload = generateContextPayload(
       schemaName,
       schemaId,
@@ -80,14 +79,38 @@ async function createContext(
     }
     await updateStore();
   } catch (error) {
-    // console.log(error);
-    // console.log(contextPayload);
-    let errorMessage = "";
-    returnData.contextId = "";
-    returnData.statusCode = 500;
-    returnData.contextError = errorMessage?.errorObject?.errorMessage;
-    // console.log(returnData);
-    return returnData;
+    async function updateStore() {
+      const storeFilePath = path.join(process.cwd(), storeName);
+
+      let existingData = {};
+
+      // Read the existing store.json content
+      if (fs.existsSync(storeFilePath)) {
+        const storeContent = fs.readFileSync(storeFilePath, "utf-8");
+        existingData = JSON.parse(storeContent);
+      }
+
+      let returnData = {
+        ingestionContextId: "",
+        ingestionContextName: "",
+        ingestionStatusCode: "500",
+        ingestionContextError: error?.response?.data?.errorMessage,
+      };
+      // Update with new data
+      const newData = {
+        ...existingData,
+        ...returnData,
+      };
+
+      // Write the updated data back to store.json
+      fs.writeFileSync(
+        storeFilePath,
+        JSON.stringify(newData, null, 2),
+        "utf-8"
+      );
+      console.log("Data updated in store.json");
+    }
+    await updateStore();
   }
 }
 export default createContext;

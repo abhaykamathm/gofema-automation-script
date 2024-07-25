@@ -1,6 +1,6 @@
 node_modules
 package-lock.json
-store.json
+store*.json
 report.json
 source.json
 drop.txt
