@@ -8,7 +8,8 @@ async function createContext(
   schemaId,
   schemaName,
   keyName = "disasterNumber",
-  type
+  type,
+  storeName
 ) {
   const url = CONSTANTS.URL_CONTEXT;
   const token = CONSTANTS.TOKEN_XPX;
@@ -53,7 +54,7 @@ async function createContext(
       };
     }
     async function updateStore() {
-      const storeFilePath = path.join(process.cwd(), "store.json");
+      const storeFilePath = path.join(process.cwd(), storeName);
 
       let existingData = {};
 

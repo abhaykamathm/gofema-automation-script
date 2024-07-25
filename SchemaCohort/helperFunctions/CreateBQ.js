@@ -8,7 +8,8 @@ async function createBQ(
   schemaId,
   schemaName,
   keyName = "disasterNumber",
-  type
+  type,
+  storeName
 ) {
   const url = CONSTANTS.URL_BQ;
   const token = CONSTANTS.TOKEN_XPX;
@@ -54,7 +55,7 @@ async function createBQ(
       };
     }
     async function updateStore() {
-      const storeFilePath = path.join(process.cwd(), "store.json");
+      const storeFilePath = path.join(process.cwd(), storeName);
 
       let existingData = {};
 

@@ -4,7 +4,7 @@ import CONSTANTS from "../../CONSTANTS.js";
 import path from "path";
 import * as fs from "fs";
 
-async function createSchema() {
+async function createSchema(storeName) {
   const url = CONSTANTS.URL_SCHEMA;
   const token = CONSTANTS.TOKEN_XPX;
   const universeId = CONSTANTS.UNIVERSE_ID_XPX;
@@ -60,7 +60,7 @@ async function createSchema() {
 
     // Utility function to update store.json with new data
     async function updateStore() {
-      const storeFilePath = path.join(process.cwd(), "store.json");
+      const storeFilePath = path.join(process.cwd(), storeName);
 
       let existingData = {};
 

@@ -1,28 +1,28 @@
-import fs from "fs";
-import path from "path";
+// utils/fileUtils.js
+import { readFile, writeFile, appendFile } from "fs/promises";
 
-// Convert __dirname for ES module
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const STORE_FILE_PATH = path.join(__dirname, "../store.json");
-const REPORT_FILE_PATH = path.join(__dirname, "../report.json");
-
-export function readStoreData() {
-  if (fs.existsSync(STORE_FILE_PATH)) {
-    const storeContent = fs.readFileSync(STORE_FILE_PATH, "utf-8");
-    return JSON.parse(storeContent);
-  }
-  return {}; // Return an empty object if store.json does not exist
+export async function createEmptyStoreFile(fileName) {
+  const emptyObject = {};
+  await writeFile(fileName, JSON.stringify(emptyObject, null, 2), "utf8");
 }
 
-export function appendToReport(storeData) {
-  let reportData = [];
-  if (fs.existsSync(REPORT_FILE_PATH)) {
-    const reportContent = fs.readFileSync(REPORT_FILE_PATH, "utf-8");
-    reportData = JSON.parse(reportContent);
-  }
-  reportData.push(storeData);
-  fs.writeFileSync(REPORT_FILE_PATH, JSON.stringify(reportData, null, 2));
+export async function createReportFile() {
+  const emptyArray = [];
+  await writeFile("report.json", JSON.stringify(emptyArray, null, 2), "utf8");
+}
+
+export async function readStoreData(fileName) {
+  const data = await readFile(fileName, "utf8");
+  return JSON.parse(data);
+}
+
+export async function appendToReport(storeData, fileName) {
+  const reportData = await readFile(fileName, "utf8").catch(() => "[]");
+  const parsedReportData = JSON.parse(reportData);
+  parsedReportData.push(storeData);
+  await writeFile(
+    "report.json",
+    JSON.stringify(parsedReportData, null, 2),
+    "utf8"
+  );
 }

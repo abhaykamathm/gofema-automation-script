@@ -4,7 +4,7 @@ import CONSTANTS from "../../CONSTANTS.js";
 import path from "path";
 import * as fs from "fs";
 
-async function createCohort(schemaId, schemaName, type) {
+async function createCohort(schemaId, schemaName, type, storeName) {
   const url = CONSTANTS.URL_COHORT;
   const token = CONSTANTS.TOKEN_XPX;
   const universeId = CONSTANTS.UNIVERSE_ID_XPX;
@@ -52,7 +52,7 @@ async function createCohort(schemaId, schemaName, type) {
     // return returnData;
 
     async function updateStore() {
-      const storeFilePath = path.join(process.cwd(), "store.json");
+      const storeFilePath = path.join(process.cwd(), storeName);
 
       let existingData = {};
 
