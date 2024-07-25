@@ -6,6 +6,7 @@ import { readStoreData, appendToReport } from "./utils/fileUtils.js";
 import createCohort from "./SchemaCohort/helperFunctions/CreateCohort.js";
 import createBQ from "./SchemaCohort/helperFunctions/CreateBQ.js";
 import createContext from "./SchemaCohort/helperFunctions/CreateContext.js";
+import generateReport from "./generateReport.js";
 
 let storeData;
 
@@ -59,6 +60,7 @@ async function main() {
     // storeData = readStoreData();
     storeData = readStoreData();
     appendToReport(storeData);
+    generateReport();
     console.log("Store data appended to report.json");
   } catch (error) {
     console.error("Error in main execution:", error);

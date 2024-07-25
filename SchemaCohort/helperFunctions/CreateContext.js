@@ -79,7 +79,7 @@ async function createContext(
     }
     await updateStore();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     // console.log(contextPayload);
     let errorMessage = "";
     returnData.contextId = "";
