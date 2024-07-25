@@ -4,6 +4,7 @@ import createSchemaCohort from "./SchemaCohort/CreateSchemaCohort.js";
 import { triggerWorkflow } from "./triggerWorkflow.js";
 import { readStoreData, appendToReport } from "./utils/fileUtils.js";
 import createCohort from "./SchemaCohort/helperFunctions/CreateCohort.js";
+import createBQ from "./SchemaCohort/helperFunctions/CreateBQ.js";
 
 let storeData;
 
@@ -24,6 +25,18 @@ async function main() {
     await createCohort(
       ingestionJobSchemaId,
       ingestionJobSchemaName,
+      "ingestion"
+    );
+    await createBQ(
+      insertionSchemaId,
+      insertionSchemaName,
+      "disasterNumber",
+      "insertion"
+    );
+    await createBQ(
+      ingestionJobSchemaId,
+      ingestionJobSchemaName,
+      "disasterNumber",
       "ingestion"
     );
     // let insertionSchemaId = storeData.insertionSchemaId;
