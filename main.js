@@ -11,7 +11,9 @@ import {
 import createCohort from "./SchemaCohort/helperFunctions/CreateCohort.js";
 import createBQ from "./SchemaCohort/helperFunctions/CreateBQ.js";
 import createContext from "./SchemaCohort/helperFunctions/CreateContext.js";
-import generateReport from "./generateReport.js";
+import { checkWorkflowStatus } from "./checkWorkflowStatus.js";
+// import generateReport from "./generateReport.js";
+
 
 let storeData;
 
@@ -70,9 +72,21 @@ async function main(fileIndex) {
       "ingestion",
       storeName
     );
-    // let insertionSchemaId = storeData.insertionSchemaId;
-    // await triggerWorkflow(insertionSchemaId);
 
+    storeData = await readStoreData(storeName);
+
+    // let insertionSchemaId = storeData.insertionSchemaId;
+    // console.log(`Store data before updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
+    await triggerWorkflow(storeData, storeName);
+    storeData = await readStoreData(storeName);
+    // console.log(`Store data after updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
+    // console.log("End of updating the wf");
+    if (storeData.processInstanceId) {
+      await checkWorkflowStatus(storeData.processInstanceId, storeName);
+    }
+    storeData = await readStoreData(storeName);
+    // console.log(`Store data after updation of WFStatus: ${JSON.stringify(storeData, null, 2)}`);
+    console.log("End of updating the wfStatus");
     // await ingestData(schemaId);
     // storeData = readStoreData();
   } catch (error) {
@@ -86,7 +100,7 @@ function wait(ms) {
 
 async function run() {
   await createReportFile();
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 10; i++) {
     main(i);
   }
 }
