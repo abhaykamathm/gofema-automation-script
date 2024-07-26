@@ -5,6 +5,7 @@ import path from "path";
 import * as fs from "fs";
 
 async function createSchema(storeName) {
+  console.log('entered create schema');
   const url = CONSTANTS.URL_SCHEMA;
   const token = CONSTANTS.TOKEN_XPX;
   const universeId = CONSTANTS.UNIVERSE_ID_XPX;
@@ -70,6 +71,7 @@ async function createSchema(storeName) {
         existingData = JSON.parse(storeContent);
       }
 
+      console.log(returnData);
       // Update with new data
       const newData = {
         ...existingData,
@@ -87,14 +89,14 @@ async function createSchema(storeName) {
     await updateStore();
   } catch (error) {
     let errorMessage = error.response ? error.response.data : error.message;
-    console.error("Error:", errorMessage);
+    console.error("Schema Error:", error);
     returnData.insertionSchemaId = "";
     returnData.insertionSchemaName = "";
-    returnData.insertionStatusCode = 500;
+    returnData.insertionStatusCode = error?.response?.data?.errorCode;
     returnData.ingestionJobSchemaId = "";
     returnData.ingestionJobSchemaName = "";
-    returnData.ingestionJobStatusCode = 500;
-    returnData.schemaError = errorMessage;
+    returnData.ingestionJobStatusCode = error?.response?.data?.errorCode;
+    returnData.schemaError = error?.response?.data?.errorMessage;
 
     return returnData;
   }

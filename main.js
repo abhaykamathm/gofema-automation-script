@@ -31,53 +31,63 @@ async function main(fileIndex) {
       ingestionJobSchemaId,
       ingestionJobSchemaName,
     } = storeData;
-    await wait(500);
-    await createCohort(
-      insertionSchemaId,
-      insertionSchemaName,
-      "insertion",
-      storeName
-    );
-    await createCohort(
-      ingestionJobSchemaId,
-      ingestionJobSchemaName,
-      "ingestion",
-      storeName
-    );
-    await createBQ(
-      insertionSchemaId,
-      insertionSchemaName,
-      "disasterNumber",
-      "insertion",
-      storeName
-    );
-    await createBQ(
-      ingestionJobSchemaId,
-      ingestionJobSchemaName,
-      "disasterNumber",
-      "ingestion",
-      storeName
-    );
-    await createContext(
-      insertionSchemaId,
-      insertionSchemaName,
-      "disasterNumber",
-      "insertion",
-      storeName
-    );
-    await createContext(
-      ingestionJobSchemaId,
-      ingestionJobSchemaName,
-      "disasterNumber",
-      "ingestion",
-      storeName
-    );
+    // -------------------------------------------------
+    // Cohort Creation
+    // await wait(500);
+    // await createCohort(
+    //   insertionSchemaId,
+    //   insertionSchemaName,
+    //   "insertion",
+    //   storeName
+    // );
+    // await createCohort(
+    //   ingestionJobSchemaId,
+    //   ingestionJobSchemaName,
+    //   "ingestion",
+    //   storeName
+    // );
+    // -------------------------------------
+    // BQ Creation
+    // await createBQ(
+    //   insertionSchemaId,
+    //   insertionSchemaName,
+    //   "disasterNumber",
+    //   "insertion",
+    //   storeName
+    // );
+    // await createBQ(
+    //   ingestionJobSchemaId,
+    //   ingestionJobSchemaName,
+    //   "disasterNumber",
+    //   "ingestion",
+    //   storeName
+    // );
+    // ----------------------------
+    // Context Creation
+    // await createContext(
+    //   insertionSchemaId,
+    //   insertionSchemaName,
+    //   "disasterNumber",
+    //   "insertion",
+    //   storeName
+    // );
+    // await createContext(
+    //   ingestionJobSchemaId,
+    //   ingestionJobSchemaName,
+    //   "disasterNumber",
+    //   "ingestion",
+    //   storeName
+    // );
 
     storeData = await readStoreData(storeName);
 
     // let insertionSchemaId = storeData.insertionSchemaId;
     // console.log(`Store data before updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
-    await triggerWorkflow(storeData, storeName);
+    if (storeData.insertionSchemaId) {
+      await triggerWorkflow(storeData, storeName);
+    } else {
+      wait(1000)
+    }
     storeData = await readStoreData(storeName);
     // console.log(`Store data after updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
     // console.log("End of updating the wf");
@@ -99,7 +109,7 @@ function wait(ms) {
 }
 
 async function run() {
-  await createReportFile();
+  // await createReportFile();
   for (let i = 0; i < 1; i++) {
     main(i);
   }

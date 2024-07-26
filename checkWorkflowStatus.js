@@ -1,33 +1,33 @@
-import {fetchProcessInstanceResult} from "./processInstanceResult.js";
+import { fetchProcessInstanceResult } from "./processInstanceResult.js";
 import { variableInstanceResult } from "./variableInstanceResult.js";
 import path from 'path';
-import  fs  from 'fs';
+import fs from 'fs';
 import axios from 'axios';
 import FormData from 'form-data';
 import dotenv from 'dotenv';
 
-async function updateStore(result,key,storeName) {
+async function updateStore(result, key, storeName) {
     const storeFilePath = path.join(process.cwd(), storeName);
-  
+
     let existingData = {};
-  
+
     // Read the existing store.json content
     if (fs.existsSync(storeFilePath)) {
-      const storeContent = fs.readFileSync(storeFilePath, "utf-8");
-      existingData = JSON.parse(storeContent);
+        const storeContent = fs.readFileSync(storeFilePath, "utf-8");
+        existingData = JSON.parse(storeContent);
     }
-  
+
     // Update with new data
     const newData = {
-      ...existingData,
-      [key]: result,
-      [`${key}updatedAt`]: new Date().toISOString(),
+        ...existingData,
+        [key]: result,
+        [`${key}updatedAt`]: new Date().toISOString(),
     };
-  
+
     // Write the updated data back to store.json
     fs.writeFileSync(storeFilePath, JSON.stringify(newData, null, 2), "utf-8");
     console.log("Workflow Data updated in store.json");
-  }
+}
 
 async function checkWorkflowStatus(processInstanceResult, storeName) {
     let flag = true;
@@ -67,4 +67,4 @@ async function checkWorkflowStatus(processInstanceResult, storeName) {
         await new Promise(resolve => setTimeout(resolve, 5000)); // Adding delay between checks
     }
 }
-export {checkWorkflowStatus};
+export { checkWorkflowStatus };
