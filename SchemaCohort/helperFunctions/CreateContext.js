@@ -83,6 +83,7 @@ async function createContext(
       const storeFilePath = path.join(process.cwd(), storeName);
 
       let existingData = {};
+      let returnData = {};
 
       // Read the existing store.json content
       if (fs.existsSync(storeFilePath)) {
@@ -90,12 +91,23 @@ async function createContext(
         existingData = JSON.parse(storeContent);
       }
 
-      let returnData = {
-        ingestionContextId: "",
-        ingestionContextName: "",
-        ingestionStatusCode: error?.response?.data?.errorCode,
-        ingestionContextError: error?.response?.data?.errorMessage,
-      };
+      if (type === "insertion") {
+        returnData = {
+          insertionContextId: "",
+          insertionContextName: "",
+          insertionStatusCode: error?.response?.data?.errorCode,
+          insertionContextError: error?.response?.data?.errorMessage,
+        };
+      }
+      if (type === "ingestion") {
+        returnData = {
+          ingestionContextId: "",
+          ingestionContextName: "",
+          ingestionStatusCode: error?.response?.data?.errorCode,
+          ingestionContextError: error?.response?.data?.errorMessage,
+        };
+      }
+
       // Update with new data
       const newData = {
         ...existingData,
