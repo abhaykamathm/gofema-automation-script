@@ -5,7 +5,7 @@ import path from "path";
 import * as fs from "fs";
 
 async function createSchema(storeName) {
-  console.log('entered create schema');
+  console.log("entered create schema");
   const url = CONSTANTS.URL_SCHEMA;
   const token = CONSTANTS.TOKEN_XPX;
   const universeId = CONSTANTS.UNIVERSE_ID_XPX;
@@ -71,7 +71,7 @@ async function createSchema(storeName) {
         existingData = JSON.parse(storeContent);
       }
 
-      console.log(returnData);
+      //   console.log(returnData);
       // Update with new data
       const newData = {
         ...existingData,
