@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, writeFile, appendFile } from "fs/promises";
 
 async function generateReport() {
   try {
@@ -20,8 +20,15 @@ async function generateReport() {
     // Create an array to store the report lines
     const reportLines = [];
 
+    // Create report.txt. If exists, append a new line.
+    await appendFile("report.txt", "\n", "utf8");
+    const reportTextData = await readFile("report.txt", "utf-8");
+
     // Add the header line
-    reportLines.push(headers.join("\t"));
+    if (reportTextData.length === 1) {
+      // When file is created, a new line is being added above, This makes string length 1 coming from file data.
+      reportLines.push(headers.join("\t"));
+    }
 
     // Add the data lines
     reportData.forEach((item) => {
@@ -30,13 +37,14 @@ async function generateReport() {
     });
 
     // Write the report lines to report.txt
-    await writeFile("report.txt", reportLines.join("\n"), "utf8");
+    // await writeFile("report.txt", reportLines.join("\n"), "utf8");
+    await appendFile("report.txt", reportLines.join("\n"), "utf8");
     console.log("Report generated successfully.");
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Generate Report Error:", err);
   }
 }
 
-export default generateReport;
+// export default generateReport;
 
-// generateReport();
+generateReport();

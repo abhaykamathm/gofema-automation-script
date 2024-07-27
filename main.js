@@ -12,8 +12,8 @@ import createCohort from "./SchemaCohort/helperFunctions/CreateCohort.js";
 import createBQ from "./SchemaCohort/helperFunctions/CreateBQ.js";
 import createContext from "./SchemaCohort/helperFunctions/CreateContext.js";
 import { checkWorkflowStatus } from "./checkWorkflowStatus.js";
+import CONSTANTS from "./CONSTANTS.js";
 // import generateReport from "./generateReport.js";
-
 
 let storeData;
 
@@ -33,51 +33,51 @@ async function main(fileIndex) {
     } = storeData;
     // -------------------------------------------------
     // Cohort Creation
-    // await wait(500);
-    // await createCohort(
-    //   insertionSchemaId,
-    //   insertionSchemaName,
-    //   "insertion",
-    //   storeName
-    // );
-    // await createCohort(
-    //   ingestionJobSchemaId,
-    //   ingestionJobSchemaName,
-    //   "ingestion",
-    //   storeName
-    // );
+    await wait(500);
+    await createCohort(
+      insertionSchemaId,
+      insertionSchemaName,
+      "insertion",
+      storeName
+    );
+    await createCohort(
+      ingestionJobSchemaId,
+      ingestionJobSchemaName,
+      "ingestion",
+      storeName
+    );
     // -------------------------------------
     // BQ Creation
-    // await createBQ(
-    //   insertionSchemaId,
-    //   insertionSchemaName,
-    //   "disasterNumber",
-    //   "insertion",
-    //   storeName
-    // );
-    // await createBQ(
-    //   ingestionJobSchemaId,
-    //   ingestionJobSchemaName,
-    //   "disasterNumber",
-    //   "ingestion",
-    //   storeName
-    // );
+    await createBQ(
+      insertionSchemaId,
+      insertionSchemaName,
+      "disasterNumber",
+      "insertion",
+      storeName
+    );
+    await createBQ(
+      ingestionJobSchemaId,
+      ingestionJobSchemaName,
+      "disasterNumber",
+      "ingestion",
+      storeName
+    );
     // ----------------------------
     // Context Creation
-    // await createContext(
-    //   insertionSchemaId,
-    //   insertionSchemaName,
-    //   "disasterNumber",
-    //   "insertion",
-    //   storeName
-    // );
-    // await createContext(
-    //   ingestionJobSchemaId,
-    //   ingestionJobSchemaName,
-    //   "disasterNumber",
-    //   "ingestion",
-    //   storeName
-    // );
+    await createContext(
+      insertionSchemaId,
+      insertionSchemaName,
+      "disasterNumber",
+      "insertion",
+      storeName
+    );
+    await createContext(
+      ingestionJobSchemaId,
+      ingestionJobSchemaName,
+      "disasterNumber",
+      "ingestion",
+      storeName
+    );
 
     storeData = await readStoreData(storeName);
 
@@ -86,7 +86,7 @@ async function main(fileIndex) {
     if (storeData.insertionSchemaId) {
       await triggerWorkflow(storeData, storeName);
     } else {
-      wait(1000)
+      await wait(1000);
     }
     storeData = await readStoreData(storeName);
     // console.log(`Store data after updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
@@ -110,7 +110,7 @@ function wait(ms) {
 
 async function run() {
   // await createReportFile();
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < CONSTANTS.LOOPS; i++) {
     main(i);
   }
 }
