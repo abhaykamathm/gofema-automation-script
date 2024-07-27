@@ -7,7 +7,8 @@ const CONSTANTS = {
   UNIVERSE_ID_XPX: "668fa6e1a2ee7d2b51716cb3",
   URL_BQ: "https://ig.mobiusdtaas.ai/pi-bigquery-service/v1.0/big-queries",
   URL_CONTEXT: "https://ig.mobiusdtaas.ai/pi-context-service/v1.0/contexts",
-  LOOPS: 5,
+  LOOPS: 4,
+  WORKFLOW_RETRY: 2,
 };
 
 export default CONSTANTS;

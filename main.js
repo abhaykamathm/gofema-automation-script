@@ -119,7 +119,7 @@ function wait(ms) {
 
 async function run() {
   for (let i = 0; i < CONSTANTS.LOOPS; i++) {
-    await main(i);
+    main(i);
   }
 }
 
