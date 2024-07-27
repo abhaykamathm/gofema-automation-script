@@ -232,8 +232,20 @@ export function generateSchemaPayload(schemaName, universeId) {
         childAttributes: [],
         access: "PUBLIC",
       },
+      ,
+      {
+        name: "timeStamp",
+        nestedName: "timeStamp",
+        type: {
+          type: "string",
+        },
+        required: false,
+        reference: false,
+        childAttributes: [],
+        access: "PUBLIC",
+      },
     ],
-    primaryKey: ["id"],
+    primaryKey: ["id", "timeStamp"],
     execute: "PUBLIC",
     visibility: "PUBLIC",
   };
