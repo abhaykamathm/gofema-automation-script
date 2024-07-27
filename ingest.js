@@ -12,8 +12,8 @@ const SOURCE_FILE_PATH = path.join(process.cwd(), "source.json"); // Use the roo
 
 const currentDate = new Date();
 const isoString = currentDate.toISOString();
-const mapping_name = "reveee_epg_mapping_test" + isoString;
-const ingest_job_name = "reveee_epg_ingest_test" + isoString;
+const mapping_name = "gofema_mapping_test" + isoString;
+const ingest_job_name = "gofema_ingest_test" + isoString;
 
 const TOKEN = process.env.GOFEMA_TOKEN;
 const TENANT_ID = process.env.GOFEMA_TENANT_ID;
@@ -64,7 +64,7 @@ async function createMapping(fullUrl, schemaId) {
           Authorization: `Bearer ${TOKEN}`,
         },
         body: JSON.stringify({
-          configName: mapping_name,
+          configName: mapping_name + schemaId,
           configDescription: mapping_name,
           entityId: schemaId,
           entityTenantId: TENANT_ID,
@@ -93,7 +93,7 @@ async function createMapping(fullUrl, schemaId) {
   }
 }
 
-async function createJob(mappingId) {
+async function createJob(mappingId, schemaId) {
   try {
     const jobResponse = await fetch(
       "https://ig.mobiusdtaas.ai/pi-ingestion-service/api/jobs?source=JSON&sinks=TI",
@@ -109,7 +109,7 @@ async function createJob(mappingId) {
           parallelism: 4,
           tenantId: TENANT_ID,
           universe: "universe",
-          name: ingest_job_name,
+          name: ingest_job_name + schemaId,
           description: ingest_job_name,
           jobType: "ONE_TIME",
           tags: {
@@ -149,7 +149,7 @@ export async function ingestData(schemaId, storeName) {
   try {
     const fullUrl = await uploadFile(SOURCE_FILE_PATH);
     const mappingId = await createMapping(fullUrl, schemaId);
-    const jobId = await createJob(mappingId);
+    const jobId = await createJob(mappingId, schemaId);
 
     // Utility function to update store.json with new data
     async function updateStore() {
