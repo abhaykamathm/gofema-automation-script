@@ -24,22 +24,23 @@ export async function createSchema() {
     // Update the config with tenantID and schemaID from the response
     if (response.data && response.data.tenantID && response.data.schemaId) {
       // Read the existing store.json file
-      let config = {};
-      if (fs.existsSync(CONFIG_FILE_PATH)) {
-        const fileContent = fs.readFileSync(CONFIG_FILE_PATH, "utf-8");
-        config = JSON.parse(fileContent);
-      }
+      // let config = {};
+      // if (fs.existsSync(CONFIG_FILE_PATH)) {
+      //   const fileContent = fs.readFileSync(CONFIG_FILE_PATH, "utf-8");
+      //   config = JSON.parse(fileContent);
+      // }
 
-      // Update the config object
-      config.tenantID = response.data.tenantID;
-      config.schemaID = response.data.schemaId;
-      config.createdAt = getDateTime();
-      console.log("Tenant ID stored:", config.tenantID);
-      console.log("Schema ID stored:", config.schemaID);
-      console.log("Schema created at:", config.createdAt);
+      // // Update the config object
+      // config.tenantID = response.data.tenantID;
+      // config.schemaID = response.data.schemaId;
+      // config.createdAt = getDateTime();
+      // console.log("Tenant ID stored:", config.tenantID);
+      // console.log("Schema ID stored:", config.schemaID);
+      // console.log("Schema created at:", config.createdAt);
+      console.log(response.data.schemaId);
 
       // Write the updated config object back to the store.json file
-      fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
+      // fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
       console.log("Config written to store.json");
     } else {
       console.error("Tenant ID or Schema ID not found in the response.");
@@ -60,3 +61,5 @@ function getDateTime() {
   let istISOString = istDate.toISOString();
   return istISOString;
 }
+
+createSchema();
