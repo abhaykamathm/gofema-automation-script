@@ -14,8 +14,8 @@ const isoString = currentDate.toISOString();
 const mapping_name = "reveee_epg_mapping_test" + isoString;
 const ingest_job_name = "reveee_epg_ingest_test" + isoString;
 
-const TOKEN = process.env.TOKEN;
-const TENANT_ID = "3ce05d1d-cfe2-47d5-bcc0-9c98a2b4f941";
+const TOKEN = process.env.GOFEMA_TOKEN;
+const TENANT_ID = process.env.GOFEMA_TENANT_ID;
 
 async function uploadFile(filePath) {
   try {
@@ -69,14 +69,27 @@ async function createMapping(fullUrl, schemaId) {
           entityTenantId: TENANT_ID,
           mapping: {
             mappings: {
-              programme_id: "programme_id",
-              programme_start: "programme_start",
-              programme_stop: "programme_stop",
-              channel_id: "channel_id",
-              channel_name: "channel_name",
-              url: "url",
-              programme_title: "programme_title",
-              programme_lang: "programme_lang",
+              disasterNumber: "disasterNumber",
+              declarationDate: "declarationDate",
+              disasterName: "disasterName",
+              incidentBeginDate: "incidentBeginDate",
+              incidentEndDate: "incidentEndDate",
+              declarationType: "declarationType",
+              stateCode: "stateCode",
+              stateName: "stateName",
+              incidentType: "incidentType",
+              entryDate: "entryDate",
+              updateDate: "updateDate",
+              closeoutDate: "closeoutDate",
+              region: "region",
+              ihProgramDeclared: "ihProgramDeclared",
+              iaProgramDeclared: "iaProgramDeclared",
+              paProgramDeclared: "paProgramDeclared",
+              hmProgramDeclared: "hmProgramDeclared",
+              id: "id",
+              hash: "hash",
+              lastRefresh: "lastRefresh",
+              timeStamp: "timeStamp",
             },
             sourceEntityId: fullUrl,
             destinationEntityId: schemaId,
@@ -91,6 +104,7 @@ async function createMapping(fullUrl, schemaId) {
     if (!mappingResponse.ok) throw new Error("Failed to create mapping");
 
     const mappingResult = await mappingResponse.json();
+    console.log("Mapping ID:", mappingResult.id);
     return mappingResult.id;
   } catch (error) {
     console.error("Error creating mapping:", error);
@@ -150,42 +164,46 @@ async function createJob(mappingId) {
   }
 }
 
-// Utility function to update store.json with new data
-async function updateStore(cdnUrl, mappingId, jobId) {
-  const storeFilePath = path.join(process.cwd(), "store.json");
-
-  let existingData = {};
-
-  // Read the existing store.json content
-  if (fs.existsSync(storeFilePath)) {
-    const storeContent = fs.readFileSync(storeFilePath, "utf-8");
-    existingData = JSON.parse(storeContent);
-  }
-
-  // Update with new data
-  const newData = {
-    ...existingData,
-    cdnUrl,
-    mappingId,
-    ingestJobId: jobId,
-    updatedAt: new Date().toISOString(),
-  };
-
-  // Write the updated data back to store.json
-  fs.writeFileSync(storeFilePath, JSON.stringify(newData, null, 2), "utf-8");
-  console.log("Data updated in store.json");
-}
-
-export async function ingestData(schemaId) {
+export async function ingestData(schemaId, storeName) {
   try {
     const fullUrl = await uploadFile(SOURCE_FILE_PATH);
     const mappingId = await createMapping(fullUrl, schemaId);
     const jobId = await createJob(mappingId);
 
-    // Update the store.json with new data
-    await updateStore(fullUrl, mappingId, jobId);
+    // Utility function to update store.json with new data
+    async function updateStore() {
+      const storeFilePath = path.join(process.cwd(), storeName);
+
+      let existingData = {};
+
+      // Read the existing store.json content
+      if (fs.existsSync(storeFilePath)) {
+        const storeContent = fs.readFileSync(storeFilePath, "utf-8");
+        existingData = JSON.parse(storeContent);
+      }
+
+      // Update with new data
+      const newData = {
+        ...existingData,
+        sourceCDN: fullUrl,
+        mappingId,
+        ingestJobId: jobId,
+      };
+
+      // Write the updated data back to store.json
+      fs.writeFileSync(
+        storeFilePath,
+        JSON.stringify(newData, null, 2),
+        "utf-8"
+      );
+      console.log("Data updated in store.json");
+    }
+
+    await updateStore();
   } catch (error) {
     console.error("Error in the ingestion process:", error);
     throw error; // Ensure errors are thrown to be handled by the caller
   }
 }
+
+// ingestData("66a3566772e881610857cd06");

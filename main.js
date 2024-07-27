@@ -13,6 +13,7 @@ import createBQ from "./SchemaCohort/helperFunctions/CreateBQ.js";
 import createContext from "./SchemaCohort/helperFunctions/CreateContext.js";
 import { checkWorkflowStatus } from "./checkWorkflowStatus.js";
 import CONSTANTS from "./CONSTANTS.js";
+import fetchDataAndWriteToFile from "./IngestionDataCreator.js";
 // import generateReport from "./generateReport.js";
 
 let storeData;
@@ -21,9 +22,13 @@ async function main(fileIndex) {
   try {
     const storeName = `store${fileIndex}.json`;
 
-    // Create the store file with an empty object
+    // STEP 1 : Create the store file with an empty object
     await createEmptyStoreFile(storeName);
+
+    // STEP 2 : Create the Insertion and Ingestion schemas
     await createSchema(storeName);
+
+    // STEP 3 : Collect schema deatils for further steps
     storeData = await readStoreData(storeName);
     const {
       insertionSchemaId,
@@ -31,8 +36,8 @@ async function main(fileIndex) {
       ingestionJobSchemaId,
       ingestionJobSchemaName,
     } = storeData;
-    // -------------------------------------------------
-    // Cohort Creation
+
+    // STEP 4 : Create the Cohorts
     await wait(500);
     await createCohort(
       insertionSchemaId,
@@ -46,8 +51,8 @@ async function main(fileIndex) {
       "ingestion",
       storeName
     );
-    // -------------------------------------
-    // BQ Creation
+
+    // STEP 5 : Create the BQs
     await createBQ(
       insertionSchemaId,
       insertionSchemaName,
@@ -62,8 +67,8 @@ async function main(fileIndex) {
       "ingestion",
       storeName
     );
-    // ----------------------------
-    // Context Creation
+
+    // STEP 6 : Create the Contexts
     await createContext(
       insertionSchemaId,
       insertionSchemaName,
@@ -79,25 +84,29 @@ async function main(fileIndex) {
       storeName
     );
 
+    // STEP 7 : Read store again for triggering Work Flow
     storeData = await readStoreData(storeName);
 
-    // let insertionSchemaId = storeData.insertionSchemaId;
-    // console.log(`Store data before updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
+    // STEP 8 : Trigger the Work Flow
     if (storeData.insertionSchemaId) {
       await triggerWorkflow(storeData, storeName);
     } else {
       await wait(1000);
     }
     storeData = await readStoreData(storeName);
-    // console.log(`Store data after updation of triggerWF: ${JSON.stringify(storeData, null, 2)}`);
-    // console.log("End of updating the wf");
     if (storeData.processInstanceId) {
       await checkWorkflowStatus(storeData.processInstanceId, storeName);
     }
+
+    // STEP 9 : Read store
     storeData = await readStoreData(storeName);
-    // console.log(`Store data after updation of WFStatus: ${JSON.stringify(storeData, null, 2)}`);
     console.log("End of updating the wfStatus");
-    // await ingestData(schemaId);
+
+    storeData = await readStoreData(storeName);
+    await fetchDataAndWriteToFile(storeData.insertionSchemaId);
+    await wait(5000);
+    storeData = await readStoreData(storeName);
+    await ingestData(storeData.ingestionJobSchemaId, storeName);
     // storeData = readStoreData();
   } catch (error) {
     console.error("Error in main execution:", error);
@@ -109,9 +118,8 @@ function wait(ms) {
 }
 
 async function run() {
-  // await createReportFile();
   for (let i = 0; i < CONSTANTS.LOOPS; i++) {
-    main(i);
+    await main(i);
   }
 }
 
