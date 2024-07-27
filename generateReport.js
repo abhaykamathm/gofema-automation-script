@@ -39,4 +39,4 @@ async function generateReport() {
 
 export default generateReport;
 
-generateReport();
+// generateReport();
