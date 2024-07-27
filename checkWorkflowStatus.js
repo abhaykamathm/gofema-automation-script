@@ -31,6 +31,7 @@ async function updateStore(result, key, storeName) {
 
 async function checkWorkflowStatus(processInstanceResult, storeName) {
     let flag = true;
+    let count = 0
     while (flag) {
         try {
             // if(storeData.processInstanceResult==undefined){
@@ -45,7 +46,7 @@ async function checkWorkflowStatus(processInstanceResult, storeName) {
             }
 
             console.log(result[0]?.state);
-            if (result[0]?.state === "ACTIVE") {
+            if (result[0]?.state === "ACTIVE" && count<5) {
                 console.log("Workflow Status is Active");
                 let variableResult = await variableInstanceResult(processInstanceResult);
                 console.log(variableResult[0].name);
@@ -54,12 +55,18 @@ async function checkWorkflowStatus(processInstanceResult, storeName) {
                     await updateStore("Error", "workflowStatus", storeName);
                     flag = false;
                 }
+                count++
             } else {
-                await updateStore("Completed", "workflowStatus", storeName);
+                if (count<5) {
+                    await updateStore("Completed", "workflowStatus", storeName);
+                } else {
+                    await updateStore("Error", "workflowStatus", storeName);
+                }
                 // console.log("Hitting undefined");
                 flag = false;
             }
             console.log(result[0].state);
+
         } catch (error) {
             console.error("Error checking workflow status:", error);
             flag = false; // Prevent endless loop on error

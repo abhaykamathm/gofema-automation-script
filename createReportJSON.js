@@ -26,7 +26,7 @@ const mergeStoresToReport = async () => {
     const reportPath = path.join(process.cwd(), "report.json");
     const mergedData = [];
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       const filePath = path.join(process.cwd(), `store${i}.json`);
       const data = await readJSONFile(filePath);
       mergedData.push(data); // Assuming each store file contains an array of objects
