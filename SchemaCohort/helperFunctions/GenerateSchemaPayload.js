@@ -239,7 +239,7 @@ export function generateSchemaPayload(schemaName, universeId) {
         type: {
           type: "string",
         },
-        required: false,
+        required: true,
         reference: false,
         childAttributes: [],
         access: "PUBLIC",
