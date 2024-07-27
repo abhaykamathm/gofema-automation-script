@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./main.js && node ./createReportJSON.js && node generateReport.js",
-    "dev": "node ./main.js; node ./createReportJSON.js; node generateReport.js",
     "automation": "node main.js",
     "report-json": "node createReportJSON",
     "generate-report": "node generateReport"
