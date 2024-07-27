@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import FormData from "form-data";
 import path from "path";
 import dotenv from "dotenv";
+import getObjectWithSameKeyValue from "./getMappingObject.js";
 
 dotenv.config(); // Load environment variables from .env
 
@@ -69,27 +70,7 @@ async function createMapping(fullUrl, schemaId) {
           entityTenantId: TENANT_ID,
           mapping: {
             mappings: {
-              disasterNumber: "disasterNumber",
-              declarationDate: "declarationDate",
-              disasterName: "disasterName",
-              incidentBeginDate: "incidentBeginDate",
-              incidentEndDate: "incidentEndDate",
-              declarationType: "declarationType",
-              stateCode: "stateCode",
-              stateName: "stateName",
-              incidentType: "incidentType",
-              entryDate: "entryDate",
-              updateDate: "updateDate",
-              closeoutDate: "closeoutDate",
-              region: "region",
-              ihProgramDeclared: "ihProgramDeclared",
-              iaProgramDeclared: "iaProgramDeclared",
-              paProgramDeclared: "paProgramDeclared",
-              hmProgramDeclared: "hmProgramDeclared",
-              id: "id",
-              hash: "hash",
-              lastRefresh: "lastRefresh",
-              timeStamp: "timeStamp",
+              ...getObjectWithSameKeyValue("source.json"),
             },
             sourceEntityId: fullUrl,
             destinationEntityId: schemaId,
@@ -153,13 +134,13 @@ async function createJob(mappingId) {
       }
     );
 
-    if (!jobResponse.ok) throw new Error("Failed to create job");
-
     const jobResult = await jobResponse.json();
-    console.log("Job created with ID:", jobResult.id);
+    // console.log(jobResult);
+    if (!jobResponse.ok) throw new Error("Failed to create job");
+    console.log("Job created with ID:", jobResult?.id);
     return jobResult.id;
   } catch (error) {
-    console.error("Error creating job:", error);
+    // console.error("MApping error creating job:", error);
     throw error;
   }
 }

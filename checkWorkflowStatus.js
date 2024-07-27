@@ -5,10 +5,10 @@ import fs from "fs";
 import axios from "axios";
 import FormData from "form-data";
 import dotenv from "dotenv";
+import CONSTANTS from "./CONSTANTS.js";
 
 async function updateStore(result, key, storeName) {
   const storeFilePath = path.join(process.cwd(), storeName);
-
   let existingData = {};
 
   // Read the existing store.json content
@@ -32,6 +32,8 @@ async function updateStore(result, key, storeName) {
 async function checkWorkflowStatus(processInstanceResult, storeName) {
   let flag = true;
   let count = 0;
+  const workflow_status_retry = CONSTANTS.WORKFLOW_RETRY;
+
   while (flag) {
     try {
       // if(storeData.processInstanceResult==undefined){
@@ -46,7 +48,7 @@ async function checkWorkflowStatus(processInstanceResult, storeName) {
       }
 
       console.log(result[0]?.state);
-      if (result[0]?.state === "ACTIVE" && count < 2) {
+      if (result[0]?.state === "ACTIVE" && count < workflow_status_retry) {
         console.log("Workflow Status is Active");
         let variableResult = await variableInstanceResult(
           processInstanceResult
@@ -59,7 +61,7 @@ async function checkWorkflowStatus(processInstanceResult, storeName) {
         }
         count++;
       } else {
-        if (count < 2) {
+        if (count < workflow_status_retry) {
           await updateStore("Completed", "workflowStatus", storeName);
         } else {
           await updateStore("Error", "workflowStatus", storeName);
