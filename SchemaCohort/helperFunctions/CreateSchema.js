@@ -3,6 +3,7 @@ import { generateSchemaPayload } from "./GenerateSchemaPayload.js";
 import CONSTANTS from "../../CONSTANTS.js";
 import path from "path";
 import * as fs from "fs";
+import crypto from "crypto";
 
 async function createSchema(storeName) {
   console.log("entered create schema");
@@ -34,11 +35,11 @@ async function createSchema(storeName) {
   try {
     // schema payload creation
     const schemaPayloadNormal = generateSchemaPayload(
-      `openfema_Normal_${timestamp}`,
+      `openfema_Normal_${timestamp}_${crypto.randomUUID()}`,
       universeId
     );
     const schemaPayloadIngestion = generateSchemaPayload(
-      `openfema_Ingestion_${timestamp}`
+      `openfema_Ingestion_${timestamp}_${crypto.randomUUID()}`
     );
     // api hit
     const responseNormal = await axios.post(url, schemaPayloadNormal, {
