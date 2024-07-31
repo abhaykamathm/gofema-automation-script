@@ -15,5 +15,5 @@ const deleteFiles = async (n) => {
 };
 
 // Example usage: delete files store0.json to store4.json
-const n = 5; // Set this to the desired value of n
+const n = 2000; // Set this to the desired value of n
 deleteFiles(n);

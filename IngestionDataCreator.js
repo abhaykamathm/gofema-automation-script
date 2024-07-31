@@ -126,7 +126,8 @@ async function simulateWorkflow(schemaId) {
 let count = 1;
 async function fetchDataAndWriteToFile(schemaId) {
   try {
-    let data = await fetchData(schemaId);
+    // let data = await fetchData(schemaId);
+    let data = [];
     if (data.length !== 0) {
       console.log("fetched workflow inserted data");
       let formattedData = formatDataAndUpdatePrimaryKey(data, true, true);
@@ -139,7 +140,7 @@ async function fetchDataAndWriteToFile(schemaId) {
         await wait(500);
         fetchDataAndWriteToFile(schemaId);
       } else {
-        console.log(schemaId)
+        console.log(schemaId);
         await simulateWorkflow(schemaId);
         // isInsertionSchemaEmpty: true
       }

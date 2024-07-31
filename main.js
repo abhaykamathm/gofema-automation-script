@@ -14,7 +14,6 @@ import createContext from "./SchemaCohort/helperFunctions/CreateContext.js";
 import { checkWorkflowStatus } from "./checkWorkflowStatus.js";
 import CONSTANTS from "./CONSTANTS.js";
 import fetchDataAndWriteToFile from "./IngestionDataCreator.js";
-// import generateReport from "./generateReport.js";
 
 let storeData;
 
@@ -38,19 +37,19 @@ async function main(fileIndex) {
     } = storeData;
 
     // STEP 4 : Create the Cohorts
-    await wait(500);
-    await createCohort(
-      insertionSchemaId,
-      insertionSchemaName,
-      "insertion",
-      storeName
-    );
-    await createCohort(
-      ingestionJobSchemaId,
-      ingestionJobSchemaName,
-      "ingestion",
-      storeName
-    );
+    // await wait(500);
+    // await createCohort(
+    //   insertionSchemaId,
+    //   insertionSchemaName,
+    //   "insertion",
+    //   storeName
+    // );
+    // await createCohort(
+    //   ingestionJobSchemaId,
+    //   ingestionJobSchemaName,
+    //   "ingestion",
+    //   storeName
+    // );
 
     // STEP 5 : Create the BQs
     await createBQ(

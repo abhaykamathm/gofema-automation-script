@@ -4,6 +4,7 @@ import FormData from "form-data";
 import path from "path";
 import dotenv from "dotenv";
 import getObjectWithSameKeyValue from "./getMappingObject.js";
+import crypto from "crypto";
 
 dotenv.config(); // Load environment variables from .env
 
@@ -12,8 +13,8 @@ const SOURCE_FILE_PATH = path.join(process.cwd(), "source.json"); // Use the roo
 
 const currentDate = new Date();
 const isoString = currentDate.toISOString();
-const mapping_name = "gofema_mapping_test" + isoString;
-const ingest_job_name = "gofema_ingest_test" + isoString;
+const mapping_name = "gofema_mapping_test" + isoString + crypto.randomUUID();
+const ingest_job_name = "gofema_ingest_test" + isoString + crypto.randomUUID();
 
 const TOKEN = process.env.GOFEMA_TOKEN;
 const TENANT_ID = process.env.GOFEMA_TENANT_ID;
