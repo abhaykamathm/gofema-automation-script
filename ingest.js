@@ -24,7 +24,7 @@ async function uploadFile(filePath) {
     const form = new FormData();
     form.append("file", fs.createReadStream(filePath));
     const uploadResponse = await fetch(
-      "https://ig.mobiusdtaas.ai/mobius-content-service/v1.0/content/upload?filePathAccess=private&filePath=%2FPI%2FIngestions",
+      "https://ig.gov-cloud.ai/mobius-content-service/v1.0/content/upload?filePathAccess=private&filePath=%2FPI%2FIngestions",
       {
         method: "POST",
         headers: {
@@ -56,7 +56,7 @@ async function uploadFile(filePath) {
 async function createMapping(fullUrl, schemaId) {
   try {
     const mappingResponse = await fetch(
-      "https://ig.mobiusdtaas.ai/pi-ingestion-service/api/mappingConfigs",
+      "https://ig.gov-cloud.ai/pi-ingestion-service/api/mappingConfigs",
       {
         method: "POST",
         headers: {
@@ -97,7 +97,7 @@ async function createMapping(fullUrl, schemaId) {
 async function createJob(mappingId, schemaId) {
   try {
     const jobResponse = await fetch(
-      "https://ig.mobiusdtaas.ai/pi-ingestion-service/api/jobs?source=JSON&sinks=TI",
+      "https://ig.gov-cloud.ai/pi-ingestion-service/api/jobs?source=JSON&sinks=TI",
       {
         method: "POST",
         headers: {

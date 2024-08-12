@@ -24,7 +24,7 @@ async function fetchDisastersData() {
 
 async function postDisastersData(schemaId, data) {
   const response = await fetch(
-    `https://ig.mobiusdtaas.ai/tf-entity-ingestion/v1.0/schemas/${schemaId}/instances?upsert=true`,
+    `https://ig.gov-cloud.ai/tf-entity-ingestion/v1.0/schemas/${schemaId}/instances?upsert=true`,
     { method: "POST", headers: headers, body: JSON.stringify(data) }
   );
   if (!response.ok) {
@@ -37,7 +37,7 @@ async function postDisastersData(schemaId, data) {
 async function fetchData(schemaId) {
   console.log("fetching data...");
   const response = await fetch(
-    `https://ig.mobiusdtaas.ai/tf-entity-ingestion/v1.0/schemas/${schemaId}/instances/list`,
+    `https://ig.gov-cloud.ai/tf-entity-ingestion/v1.0/schemas/${schemaId}/instances/list`,
     { headers: headers }
   );
   if (!response.ok) {

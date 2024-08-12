@@ -37,19 +37,19 @@ async function main(fileIndex) {
     } = storeData;
 
     // STEP 4 : Create the Cohorts
-    // await wait(500);
-    // await createCohort(
-    //   insertionSchemaId,
-    //   insertionSchemaName,
-    //   "insertion",
-    //   storeName
-    // );
-    // await createCohort(
-    //   ingestionJobSchemaId,
-    //   ingestionJobSchemaName,
-    //   "ingestion",
-    //   storeName
-    // );
+    await wait(2000);
+    await createCohort(
+      insertionSchemaId,
+      insertionSchemaName,
+      "insertion",
+      storeName
+    );
+    await createCohort(
+      ingestionJobSchemaId,
+      ingestionJobSchemaName,
+      "ingestion",
+      storeName
+    );
 
     // STEP 5 : Create the BQs
     await createBQ(
@@ -68,6 +68,7 @@ async function main(fileIndex) {
     );
 
     // STEP 6 : Create the Contexts
+    await wait(2000);
     await createContext(
       insertionSchemaId,
       insertionSchemaName,

@@ -4,7 +4,7 @@ import axios from 'axios';
 const TOKEN = process.env.WORKFLOW_TOKEN;
 async function variableInstanceResult(processInstanceId) {
     try {
-        const url = `https://ig.mobiusdtaas.ai/bob-history-consumer/engine-rest/history/variable-instance?processInstanceId=${processInstanceId}`;
+        const url = `https://ig.gov-cloud.ai/bob-history-consumer/engine-rest/history/variable-instance?processInstanceId=${processInstanceId}`;
 
         const headers = {
             'accept': 'application/json',
