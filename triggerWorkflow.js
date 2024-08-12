@@ -41,7 +41,7 @@ async function triggerWorkflow(storeData, storeName) {
   try {
     // console.log(DEBUG);  
     let insertionSchemaId = storeData.insertionSchemaId;
-    const url = `https://ig.mobiusdtaas.ai/bob-camunda-quarkus/v1.0/camunda/execute/${TRIGGER_WORKFLOW_ID}?env=TEST`;
+    const url = `https://ig.gov-cloud.ai/bob-camunda-quarkus/v1.0/camunda/execute/${TRIGGER_WORKFLOW_ID}?env=TEST`;
     const body = new FormData();
     // let urlEncoded = encodeURIComponent(insertionSchemaId);
     // body.append("schemaid", urlEncoded);
