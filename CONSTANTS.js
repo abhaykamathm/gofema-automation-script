@@ -9,6 +9,8 @@ const CONSTANTS = {
   URL_CONTEXT: "https://ig.gov-cloud.ai/pi-context-service/v1.0/contexts",
   LOOPS: 1,
   WORKFLOW_RETRY: 5,
+  COHORT_RETRY:10,
+  CONTEXT_RETRY:10
 };
 
 export default CONSTANTS;

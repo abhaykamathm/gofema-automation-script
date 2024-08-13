@@ -14,6 +14,7 @@ async function createContext(
   const url = CONSTANTS.URL_CONTEXT;
   const token = CONSTANTS.TOKEN_XPX;
   const universeId = CONSTANTS.UNIVERSE_ID_XPX;
+  const repetitions = CONSTANTS.CONTEXT_RETRY;
 
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -21,108 +22,103 @@ async function createContext(
     accept: "application/json",
   };
 
+  let attempt = 0;
   let returnData = {};
 
-  try {
-    var contextPayload = generateContextPayload(
-      schemaName,
-      schemaId,
-      universeId,
-      keyName
-    );
-
-    // api hit
-    const response = await axios.post(url, contextPayload, {
-      headers,
-    });
-
-    if (type === "insertion") {
-      returnData = {
-        insertionContextId: response.data?.id,
-        insertionContextName: schemaName,
-        insertionContextStatusCode: response.status,
-        insertionContextError: "",
-      };
-    }
-    if (type === "ingestion") {
-      returnData = {
-        ingestionContextId: response.data?.id,
-        ingestionContextName: schemaName,
-        ingestionContextStatusCode: response.status,
-        ingestionContextError: "",
-      };
-    }
-    async function updateStore() {
-      const storeFilePath = path.join(process.cwd(), storeName);
-
-      let existingData = {};
-
-      // Read the existing store.json content
-      if (fs.existsSync(storeFilePath)) {
-        const storeContent = fs.readFileSync(storeFilePath, "utf-8");
-        existingData = JSON.parse(storeContent);
-      }
-
-      // Update with new data
-      const newData = {
-        ...existingData,
-        ...returnData,
-      };
-
-      // Write the updated data back to store.json
-      fs.writeFileSync(
-        storeFilePath,
-        JSON.stringify(newData, null, 2),
-        "utf-8"
+  while (attempt < repetitions) {
+    try {
+      const contextPayload = generateContextPayload(
+        schemaName,
+        schemaId,
+        universeId,
+        keyName
       );
-      console.log("Data updated in store.json");
-    }
-    await updateStore();
-  } catch (error) {
-    async function updateStore() {
-      const storeFilePath = path.join(process.cwd(), storeName);
 
-      let existingData = {};
-      let returnData = {};
+      // API hit
+      const response = await axios.post(url, contextPayload, { headers });
 
-      // Read the existing store.json content
-      if (fs.existsSync(storeFilePath)) {
-        const storeContent = fs.readFileSync(storeFilePath, "utf-8");
-        existingData = JSON.parse(storeContent);
+      // Store and return data
+      if (type === "insertion") {
+        returnData = {
+          insertionContextId: response.data?.id,
+          insertionContextName: schemaName,
+          insertionContextStatusCode: response.status,
+          insertionContextError: "",
+        };
       }
 
+      if (type === "ingestion") {
+        returnData = {
+          ingestionContextId: response.data?.id,
+          ingestionContextName: schemaName,
+          ingestionContextStatusCode: response.status,
+          ingestionContextError: "",
+        };
+      }
+
+      // Update the store with the response data
+      await updateStore(storeName, returnData);
+
+      console.log("Context created successfully.");
+      break; // Exit the loop if successful
+    } catch (error) {
+      attempt += 1;
+
+      // Store and return error data
       if (type === "insertion") {
         returnData = {
           insertionContextId: "",
           insertionContextName: "",
-          insertionStatusCode: error?.response?.data?.errorCode,
+          insertionContextStatusCode: error?.response?.data?.errorCode,
           insertionContextError: error?.response?.data?.errorMessage,
         };
       }
+
       if (type === "ingestion") {
         returnData = {
           ingestionContextId: "",
           ingestionContextName: "",
-          ingestionStatusCode: error?.response?.data?.errorCode,
+          ingestionContextStatusCode: error?.response?.data?.errorCode,
           ingestionContextError: error?.response?.data?.errorMessage,
         };
       }
 
-      // Update with new data
-      const newData = {
-        ...existingData,
-        ...returnData,
-      };
+      // Update the store with the error data
+      await updateStore(storeName, returnData);
 
-      // Write the updated data back to store.json
-      fs.writeFileSync(
-        storeFilePath,
-        JSON.stringify(newData, null, 2),
-        "utf-8"
-      );
-      console.log("Data updated in store.json");
+      if (attempt >= repetitions) {
+        console.log("Max retries reached. Exiting.");
+      } else {
+        console.log(`Retrying... Attempt ${attempt} of ${repetitions}`);
+      }
     }
-    await updateStore();
   }
 }
+
+// Helper function to update the store
+async function updateStore(storeName, data) {
+  const storeFilePath = path.join(process.cwd(), storeName);
+
+  let existingData = {};
+
+  // Read the existing store.json content
+  if (fs.existsSync(storeFilePath)) {
+    const storeContent = fs.readFileSync(storeFilePath, "utf-8");
+    existingData = JSON.parse(storeContent);
+  }
+
+  // Update with new data
+  const newData = {
+    ...existingData,
+    ...data,
+  };
+
+  // Write the updated data back to store.json
+  fs.writeFileSync(storeFilePath, JSON.stringify(newData, null, 2), "utf-8");
+  console.log("Data updated in store.json");
+}
+
+// Usage:
+// createContext("schemaId", "schemaName", "keyName", "insertion", "store.json");
+
 export default createContext;
